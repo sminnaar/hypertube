@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from torr.views import stream
+from torr.views import stream, date, about
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('torr/', stream),
+    path('', stream),
+    path('date', date),
+    path('about', about),
 ]
