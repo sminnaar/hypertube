@@ -5,16 +5,37 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from 'react-bootstrap';
 
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+
 import styles from '../styles/Home.module.css'
+
+const fetcher = async (url) => {
+    const res = await fetch(url)
+    const data = await res.json()
+  
+    if (res.status !== 200) {
+      throw new Error(data.message)
+    }
+    return data
+  }
 
 export default function Register() {
     const { register, handleSubmit, watch, errors } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => data;
 
-    // console.log(watch("example"));
+    const { query } = useRouter()
+    const { data, error } = useSWR(
+    () => query.id && `/api/register_submit/${data}`,
+    fetcher
+  )
 
     return (
         <div className={styles.container}>
+        <Head>
+        <title>Hypertube Stream</title>
+        <link rel="icon" href="/hyper.ico" />
+      </Head>
         <Head>
           <title>Register</title>
           <link rel="icon" href="/hyper.ico" />
